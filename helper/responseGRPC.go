@@ -9,6 +9,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// RespondWithErrorGRPC формирует и возвращает стандартизированный gRPC ответ с ошибкой, логируя информацию.
 func RespondWithErrorGRPC(ctx context.Context, code codes.Code, msg string, err error) error {
 	if err != nil {
 		log.Println(err)

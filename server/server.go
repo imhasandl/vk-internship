@@ -16,6 +16,7 @@ type apiConfig struct {
 	PubSub *subpub.PubSub  
 }
 
+// NewServer создает новый экземпляр сервера.
 func NewServer(port string, pubsub *subpub.PubSub) *apiConfig {
 	return &apiConfig{
 		Port: port,
