@@ -7,6 +7,7 @@ import (
 
 	pb "github.com/imhasandl/vk-internship/protos"
 	"github.com/imhasandl/vk-internship/server"
+	"github.com/imhasandl/vk-internship/subpub"
 	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 )
@@ -21,12 +22,14 @@ func main() {
 		log.Fatalf("Set server port in env")
 	}
 
+	pubSub := subpub.NewSubPub()
+
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listed: %v", err)
 	}
 
-	server := server.NewServer(port)
+	server := server.NewServer(port, pubSub)
 	
 	s := grpc.NewServer()
 	pb.RegisterSubPubServer(s, server)
@@ -34,6 +37,6 @@ func main() {
 	log.Printf("Server listening on %v", lis.Addr())
 
 	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to lister: %v", err)
+		log.Fatalf("failed to serve: %v", err)
 	}
 }
